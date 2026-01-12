@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     
     # third party
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_spectacular',
 
     # local apps
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'vendors',
     'orders',
     'payments',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +69,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'marketlink.wsgi.application'
+
+AUTH_USER_MODEL = "core.User"
 
 
 # Database
