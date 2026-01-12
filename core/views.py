@@ -48,9 +48,10 @@ class LoginView(APIView):
     POST /api/auth/login/ (alternative)
     """
     permission_classes = [permissions.AllowAny]
+    serializer_class = LoginSerializer  # Add this line
     
     def post(self, request):
-        serializer = LoginSerializer(data=request.data, context={'request': request})
+        serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         
         user = serializer.validated_data['user']
@@ -70,6 +71,7 @@ class LogoutView(APIView):
     POST /api/auth/logout/
     """
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = None  # Explicitly set to None since we don't need one
     
     def post(self, request):
         try:
@@ -105,9 +107,10 @@ class ChangePasswordView(APIView):
     POST /api/auth/change-password/
     """
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ChangePasswordSerializer  # Add this line
     
     def post(self, request):
-        serializer = ChangePasswordSerializer(
+        serializer = self.serializer_class(
             data=request.data,
             context={'request': request}
         )
@@ -131,9 +134,10 @@ class WhoAmIView(APIView):
     GET /api/auth/whoami/
     """
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserSerializer  # Add this line
     
     def get(self, request):
-        serializer = UserSerializer(request.user, context={'request': request})
+        serializer = self.serializer_class(request.user, context={'request': request})
         return Response(serializer.data)
 
 
@@ -155,6 +159,7 @@ class ActivateDeactivateUserView(APIView):
     POST /api/auth/users/{id}/toggle-active/
     """
     permission_classes = [permissions.IsAdminUser]
+    serializer_class = None  # Explicitly set to None
     
     def post(self, request, pk):
         try:
@@ -189,6 +194,7 @@ class UpdateUserRoleView(APIView):
     POST /api/auth/users/{id}/update-role/
     """
     permission_classes = [permissions.IsAdminUser]
+    serializer_class = None  # Explicitly set to None
     
     def post(self, request, pk):
         try:
