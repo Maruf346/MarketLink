@@ -8,7 +8,7 @@ import json
 from .models import RepairOrder
 from .serializers import RepairOrderSerializer, CreateOrderSerializer
 from core.permissions import IsCustomerUser
-
+from django.urls import reverse
 
 class CreateOrderView(APIView):
     permission_classes = [permissions.IsAuthenticated, IsCustomerUser]
@@ -42,11 +42,11 @@ class CreateOrderView(APIView):
                 order = serializer.save()
             
             # Generate payment URL (mock for now)
-            payment_url = f"/mock-payment/{order.order_id}/"
+            payment_initiate_url = reverse('initiate-payment', kwargs={'order_id': order.order_id})
             
             return Response({
                 'order': RepairOrderSerializer(order).data,
-                'payment_url': payment_url,
+                'payment_initiate_url': payment_initiate_url,
                 'message': 'Order created successfully. Proceed to payment.'
             }, status=status.HTTP_201_CREATED)
             

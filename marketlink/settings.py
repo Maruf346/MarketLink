@@ -12,10 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG") == "True"
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -144,3 +144,33 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,  # optional: hides raw schema in UI
 }
+
+
+# SSLCommerz Configuration
+SSLCOMMERZ_STORE_ID = os.getenv('SSLCOMMERZ_STORE_ID', '')
+SSLCOMMERZ_STORE_PASSWORD = os.getenv('SSLCOMMERZ_STORE_PASSWORD', '')
+
+# Convert string to boolean
+sandbox_mode_str = os.getenv('SSLCOMMERZ_SANDBOX_MODE', 'True')
+SSLCOMMERZ_SANDBOX_MODE = sandbox_mode_str.lower() == 'true'
+
+# SSLCommerz URLs
+SSLCOMMERZ_CHECKOUT_URL = os.getenv(
+    'SSLCOMMERZ_CHECKOUT_URL', 
+    'https://sandbox.sslcommerz.com/gwprocess/v3/api.php'
+)
+SSLCOMMERZ_VALIDATION_URL = os.getenv(
+    'SSLCOMMERZ_VALIDATION_URL',
+    'https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php'
+)
+SSLCOMMERZ_REFUND_URL = os.getenv(
+    'SSLCOMMERZ_REFUND_URL',
+    'https://sandbox.sslcommerz.com/validator/api/merchantTransIDvalidationAPI.php'
+)
+
+# Webhook Secret
+WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', os.getenv('SSLCOMMERZ_STORE_PASSWORD', ''))
+
+# Application URLs
+BASE_URL = os.getenv('BASE_URL', 'http://localhost:8000')
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:3000')
